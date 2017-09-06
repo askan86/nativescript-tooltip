@@ -36,6 +36,30 @@ toggleTooltip(args: any) {
 }
 ```
 
+### Callbacks
+#### Android
+
+add the following to the tooltip config
+```js
+callback: {
+    onTooltipClose: (tooltip: any, fromUser: boolean, containsTouch: boolean) => {
+        console.log('onTooltipClose');
+    },
+    onTooltipFailed: (view: any) => {
+        console.log('onTooltipClose');
+    },
+    onTooltipHidden: (view: any) => {
+        console.log('onTooltipHidden');
+    },
+    onTooltipShown: (view: any) => {
+        console.log('onTooltipShown');
+    }
+}
+```
+
+#### IOS
+> Needs to be implemented
+
 ## Styling
 
 ### Android
@@ -63,6 +87,7 @@ const ToolTip = require("nativescript-tooltip").ToolTip;
 const tip = new ToolTip(view,{text:"Some Text",backgroundColor:"pink",textColor:"black"});
 tip.show();  //.hide()
 ```
+
 ### Config
 ```ts
 const config = {
@@ -77,6 +102,12 @@ const config = {
   backgroundColor?: string;
   textColor?: string;
   style?:string;
+  callback?: {
+    onTooltipClose(tooltip: any, fromUser: boolean, containsTouch: boolean): void;
+    onTooltipFailed(view: any): void;
+    onTooltipShown(view: any): void;
+    onTooltipHidden(view: any): void;
+  }
 }
 ```
 

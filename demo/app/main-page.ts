@@ -21,9 +21,21 @@ export function pushIt(args) {
         // textColor: "white",
         // backgroundColor: "blue",
         style: "CustomToolTipLayoutStyle",
-        width:400
+        width:400,
+        callback: {
+            onTooltipClose: (tooltip: any, fromUser: boolean, containsTouch: boolean) => {
+                console.log('onTooltipClose');
+            },
+            onTooltipFailed: (view: any) => {
+                console.log('onTooltipClose');
+            },
+            onTooltipHidden: (view: any) => {
+                console.log('onTooltipHidden');
+            },
+            onTooltipShown: (view: any) => {
+                console.log('onTooltipShown');
+            }
+        }
     });
     t.show();
-// new ToolTip(args.object, {text: 'hoi'});
-console.log('push it');
 }

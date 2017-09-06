@@ -10,6 +10,13 @@ export interface ToolTipConfig {
     backgroundColor?: string;
     textColor?: string;
     style?: string;
+    callback?: ToolTipCallback;
+}
+export interface ToolTipCallback {
+    onTooltipClose(tooltip: any, fromUser: boolean, containsTouch: boolean): void;
+    onTooltipFailed(view: any): void;
+    onTooltipShown(view: any): void;
+    onTooltipHidden(view: any): void;
 }
 export declare type ToolTipPosition = "left" | "up" | "right" | "down" | "top" | "bottom";
 export declare type ToolTipViewType = "native";
