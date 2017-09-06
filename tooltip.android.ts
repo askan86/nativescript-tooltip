@@ -7,6 +7,7 @@ export class ToolTip {
 
     constructor(view: any, config: ToolTipConfig) {
         const id = Math.floor((Math.random() * 1000) + 1);
+        console.log('NATIVESCRIPT TOOLTIP 1');
         this.builder = new it.sephiroth.android.library.tooltip.Tooltip.Builder(id);
 
         let pos;
@@ -28,6 +29,7 @@ export class ToolTip {
                 break;
 
         }
+        console.log('NATIVESCRIPT TOOLTIP 2');
         if (config.viewType && config.viewType === "native") {
             this.builder.anchor(view, pos);
         } else {

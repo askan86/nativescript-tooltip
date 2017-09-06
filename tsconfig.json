@@ -8,7 +8,9 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "lib": [
-            "dom"
+            "es6",
+            "dom",
+            "es2015.iterable"
         ],
         "sourceMap": true,
         "pretty": true,
@@ -25,7 +27,15 @@
             "./node_modules"
         ],
         "types": [
-        ]
+            "core-js"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "*": [
+                "./node_modules/tns-core-modules/*",
+                "./node_modules/*"
+            ]
+        }
     },
     "exclude": [
         "demo",

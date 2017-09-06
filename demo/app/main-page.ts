@@ -15,13 +15,15 @@ export function pageLoaded(args: observable.EventData) {
 
 export function pushIt(args) {
    const t = new ToolTip(args.object, {
-        text: "Testing le Tester",
+        text: "Hoi",
         position: "bottom",
-        hideArrow: false,
-        textColor: "white",
-        backgroundColor: "blue",
+        // hideArrow: false,
+        // textColor: "white",
+        // backgroundColor: "blue",
         style: "CustomToolTipLayoutStyle",
         width:400
     });
     t.show();
+// new ToolTip(args.object, {text: 'hoi'});
+console.log('push it');
 }

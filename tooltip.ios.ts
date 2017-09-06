@@ -23,7 +23,8 @@ export class ToolTip {
         }
 
         if(config.delay){
-            ap.delayIn = NSDateInterval.alloc().duration(config.delay)
+            // TODO: add duration
+            // ap.delayIn = NSDateInterval.alloc().duration(config.delay)
         }
 
     }
