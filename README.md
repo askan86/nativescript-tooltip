@@ -7,18 +7,32 @@
 `tns plugin add nativescript-tooltip`
 
 ## Usage
-TypeScript
+#### View / Template
+``` 
+<Label
+    style="color: #ff00ff"
+    text="hit me"
+    (tap)="toggleTooltip($event)"></Label>
+
+```
+
+#### TypeScript
 ```ts
 import {ToolTip} from "nativescript-tooltip";
-const tip = new ToolTip(view,{text:"Some Text"});
-tip.show();  //.hide()
+
+toggleTooltip(args: any) {
+    if (!t) {
+        t = new ToolTip(args.object, {
+            text: 'I am a Tooltip.',
+            position: 'bottom'
+        });
+        t.show();
+    } else {
+        t.hide();
+    }
+}
 ```
-JavaScript
-```js
-const ToolTip = require("nativescript-tooltip").ToolTip;
-const tip = new ToolTip(view,{text:"Some Text"});
-tip.show();  //.hide()
-```
+
 ## Styling
 
 ### Android
