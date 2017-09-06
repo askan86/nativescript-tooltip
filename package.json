@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/triniwiz/nativescript-tooltip.git"
+    "url": "https://github.com/ninjaonsafari/nativescript-tooltip.git"
   },
   "keywords": [
     "NativeScript",
@@ -34,14 +34,14 @@
     "tooltip"
   ],
   "author": {
-    "name": "Osei Fortune",
-    "email": "fortune.osei@yahoo.com"
+    "name": "Tobias Lopez",
+    "email": "tobias.lopez@opten.ch"
   },
   "bugs": {
-    "url": "https://github.com/triniwiz/nativescript-tooltip/issues"
+    "url": "https://github.com/ninjaonsafari/nativescript-tooltip/issues"
   },
   "license": "MIT",
-  "homepage": "https://github.com/triniwiz/nativescript-tooltip",
+  "homepage": "https://github.com/ninjaonsafari/nativescript-tooltip",
   "readmeFilename": "README.md",
   "devDependencies": {
     "@types/core-js": "^0.9.43",
