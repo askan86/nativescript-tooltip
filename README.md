@@ -4,7 +4,10 @@
 # NativeScript ToolTip
 
 ## Install
-`tns plugin add nativescript-tooltip`
+`npm install ninjaonsafari/nativescript-tooltip --save`
+
+
+> Note: I will deploy a npm package as soon as [@triniwiz](https://github.com/triniwiz/nativescript-tooltip) gives me the rights.
 
 ## Usage
 #### View / Template
