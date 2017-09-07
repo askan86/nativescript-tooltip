@@ -50,7 +50,8 @@ export class ToolTip {
         if (config.fadeDuration) {
             this.builder.fadeDuration(config.fadeDuration);
         }
-        this.builder.fitToScreen(false);
+
+        this.builder.fitToScreen(true);
 
         if (config.width) {
             this.builder.maxWidth(config.width)

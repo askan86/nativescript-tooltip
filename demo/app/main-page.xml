@@ -1,6 +1,11 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="pageLoaded">
-  <GridLayout height="44" columns="auto,*,10">
-    <TextField col="1" text=""></TextField>
-    <Button col="0" text="Push It!!!" tap="pushIt"></Button>
-  </GridLayout>
+    <GridLayout columns="auto,*,auto" rows="auto,*,auto">
+        <Button row="0" col="0" text="Push It!!!" tap="pushIt"></Button>
+        <Button row="0" col="2" text="Push It!!!" tap="pushIt"></Button>
+
+        <Button row="1" col="1" text="Push It!!!" tap="pushIt"></Button>
+
+        <Button row="2" col="0" text="Push It!!!" tap="pushIt"></Button>
+        <Button row="2" col="2" text="Push It!!!" tap="pushIt"></Button>
+    </GridLayout>
 </Page>

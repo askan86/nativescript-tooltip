@@ -15,8 +15,8 @@ export function pageLoaded(args: observable.EventData) {
 
 export function pushIt(args) {
    const t = new ToolTip(args.object, {
-        text: "Hoi",
-        position: "bottom",
+        text: prepareContent(),
+        position: "top",
         // hideArrow: false,
         // textColor: "white",
         // backgroundColor: "blue",
@@ -38,4 +38,16 @@ export function pushIt(args) {
         }
     });
     t.show();
+}
+
+function prepareContent() {
+    const elements: string[] = [];
+    elements.push('Hoi');
+    elements.push('<span style="float: right; text-align: right">x</span>')
+    elements.push('<hr />');
+    elements.push('<br />');
+    elements.push('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.');
+
+    elements.push('<a nsRouterLink="/secure/welcome" title="">Here is a link</a>');
+    return elements.join('');
 }
