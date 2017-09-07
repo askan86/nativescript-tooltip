@@ -7,9 +7,10 @@ export class ToolTip {
 
     constructor(view: any, config: ToolTipConfig) {
         const id = Math.floor((Math.random() * 1000) + 1);
-        this.builder = new it.sephiroth.android.library.tooltip.Tooltip.Builder(id);
+        //var tmp = new com.ryanharter.android.tooltips.ToolTip.Builder(app.android.currentContext);
+        //this.builder = new it.sephiroth.android.library.tooltip.Tooltip.Builder(id);
 
-        let pos;
+        /*let pos;
         switch (config.position) {
             case "left":
                 pos = it.sephiroth.android.library.tooltip.Tooltip.Gravity.LEFT;
@@ -74,7 +75,7 @@ export class ToolTip {
             this.builder.withCallback(new it.sephiroth.android.library.tooltip.Tooltip.Callback(config.callback));
         }
 
-        this.tip = it.sephiroth.android.library.tooltip.Tooltip.make(app.android.foregroundActivity, this.builder.build());
+        this.tip = it.sephiroth.android.library.tooltip.Tooltip.make(app.android.foregroundActivity, this.builder.build());*/
     }
 
     show() {
