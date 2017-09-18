@@ -36,11 +36,14 @@ var ToolTip = (function () {
         }
         this.popup.setContentView(this.layout);
         this.popup.setWidth(this.config.width);
+        this.popup.setHeight(this.config.height);
         this.popup.setOutsideTouchable(true);
         this.popup.setTouchable(true);
-        this.popup.setWindowLayoutMode(this.config.width, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+        this.popup.setWindowLayoutMode(this.config.width, this.config.height);
     };
     ToolTip.prototype.getContentLayout = function (config) {
+        var wrapper = new android.widget.LinearLayout(app.android.context);
+        var scrollView = new android.widget.ScrollView(app.android.context);
         var content = new android.widget.LinearLayout(app.android.context);
         content.setPadding(20, 30, 20, 30);
         content.setBackgroundColor(android.graphics.Color.BLACK);
@@ -63,7 +66,9 @@ var ToolTip = (function () {
                 }
             }
         }
-        return content;
+        scrollView.addView(content);
+        wrapper.addView(scrollView);
+        return wrapper;
     };
     ToolTip.prototype.getContentTitle = function (title) {
         var twTitle = new android.widget.TextView(app.android.context);
