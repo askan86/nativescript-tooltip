@@ -11,7 +11,7 @@ var ToolTip = (function () {
     ToolTip.prototype.show = function (x, y) {
         if (x >= 0 && y >= 0) {
             this.prepareContent(true);
-            this.popup.showAtLocation(this.anchor.parent.android, android.view.Gravity.BOTTOM | android.view.Gravity.LEFT, x, y);
+            this.popup.showAtLocation(this.anchor.android, android.view.Gravity.BOTTOM | android.view.Gravity.LEFT, x, y);
         }
         else {
             this.prepareContent(false);

@@ -22,7 +22,7 @@ export class ToolTip {
         if (x >= 0 && y >= 0) {
             this.prepareContent(true);
             this.popup.showAtLocation(
-                this.anchor.parent.android,
+                this.anchor.android,
                 android.view.Gravity.BOTTOM|android.view.Gravity.LEFT,
                 x, y);
         } else {
