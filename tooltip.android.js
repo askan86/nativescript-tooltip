@@ -9,14 +9,16 @@ var ToolTip = (function () {
         this.layout = new android.widget.LinearLayout(app.android.context);
     }
     ToolTip.prototype.show = function (x, y) {
+        console.log('isAboveAnchor: ' + this.popup.isAboveAnchor());
         if (x >= 0 && y >= 0) {
             this.prepareContent(true);
             this.popup.showAtLocation(this.anchor.android, android.view.Gravity.BOTTOM | android.view.Gravity.LEFT, x, y);
         }
         else {
             this.prepareContent(false);
-            this.popup.showAsDropDown(this.anchor.android);
+            this.popup.showAsDropDown(this.anchor.android, 0, 0, android.view.Gravity.BOTTOM);
         }
+        console.log('isAboveAnchor: ' + this.popup.isAboveAnchor());
     };
     ToolTip.prototype.prepareContent = function (isArrowBottom) {
         this.arrow = this.getArrowView(50, isArrowBottom);
