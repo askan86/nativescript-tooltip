@@ -53,16 +53,19 @@ export class ToolTip {
         }
 
         this.popup.setContentView(this.layout);
-        this.popup.setWidth(this.config.width)
+        this.popup.setWidth(this.config.width);
+        this.popup.setHeight(this.config.height);
         this.popup.setOutsideTouchable(true);
         this.popup.setTouchable(true);
         // this.popup.setover
         this.popup.setWindowLayoutMode(
             this.config.width,
-            android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+            this.config.height);
     }
 
     private getContentLayout(config: ToolTipConfig): android.widget.LinearLayout {
+        const wrapper = new android.widget.LinearLayout(app.android.context);
+        const scrollView = new android.widget.ScrollView(app.android.context);
         const content = new android.widget.LinearLayout(app.android.context);
         content.setPadding(20, 30, 20, 30);
         content.setBackgroundColor(android.graphics.Color.BLACK);
@@ -90,7 +93,9 @@ export class ToolTip {
             }
         }
 
-        return content;
+        scrollView.addView(content);
+        wrapper.addView(scrollView);
+        return wrapper;
     }
 
     private getContentTitle(title: string): android.widget.TextView {

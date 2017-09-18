@@ -1,5 +1,6 @@
 export interface ToolTipConfig {
     width?: number;
+    height?: number;
     onDismiss?: android.widget.PopupWindow.OnDismissListener;
     callback?: ToolTipCallback;
     content?: ToolTipContent;
