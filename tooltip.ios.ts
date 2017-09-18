@@ -28,7 +28,7 @@ export class ToolTip {
         // }
 
     }
-    show(x: number, y: number){
+    show(x?: number, y?: number){
     //     let config = this.config;
     //     let view = this.view;
     //     let pos;

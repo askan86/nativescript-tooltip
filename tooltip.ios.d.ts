@@ -4,5 +4,5 @@ export declare class ToolTip {
     private config;
     private view;
     constructor(view: any, config: ToolTipConfig);
-    show(x: number, y: number): void;
+    show(x?: number, y?: number): void;
 }

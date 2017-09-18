@@ -18,7 +18,7 @@ export class ToolTip {
         this.layout = new android.widget.LinearLayout(app.android.context);   
     }
 
-    public show(x: number, y: number) {
+    public show(x?: number, y?: number) {
         if (x >= 0 && y >= 0) {
             this.prepareContent(true);
             this.popup.showAtLocation(
