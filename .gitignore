@@ -1,4 +1,4 @@
-*.js
+
 *.js.map
 *.log
 scripts
@@ -21,3 +21,4 @@ scripts/postclone.js
 .idea/modules.xml
 
 .idea/nativescript-tooltip.iml
+demo/**

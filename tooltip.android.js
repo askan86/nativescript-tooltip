@@ -12,6 +12,7 @@ var ToolTip = (function () {
         console.log('isAboveAnchor: ' + this.popup.isAboveAnchor());
         this.popup.showAsDropDown(this.anchor.android);
         this.prepareContent(this.popup.isAboveAnchor());
+        this.popup.update();
         console.log('isAboveAnchor: ' + this.popup.isAboveAnchor());
     };
     ToolTip.prototype.prepareContent = function (isArrowBottom) {

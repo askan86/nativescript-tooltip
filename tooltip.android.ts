@@ -33,6 +33,8 @@ export class ToolTip {
             
         }*/
 
+        this.popup.update();
+
         console.log('isAboveAnchor: ' + this.popup.isAboveAnchor())
     }
 
