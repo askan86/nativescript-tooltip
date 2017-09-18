@@ -68,6 +68,7 @@ export class ToolTip {
         const scrollView = new android.widget.ScrollView(app.android.context);
         const content = new android.widget.LinearLayout(app.android.context);
         content.setPadding(20, 30, 20, 30);
+        content.setOrientation(1);
         content.setBackgroundColor(android.graphics.Color.BLACK);
 
         if (config.content) {
