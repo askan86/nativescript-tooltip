@@ -20,7 +20,9 @@ export class ToolTip {
 
     public show(x?: number, y?: number) {
         console.log('isAboveAnchor: ' + this.popup.isAboveAnchor())
-        if (x >= 0 && y >= 0) {
+        this.popup.showAsDropDown(this.anchor.android);
+        this.prepareContent(this.popup.isAboveAnchor());
+        /*if (x >= 0 && y >= 0) {
             this.prepareContent(true);
             this.popup.showAtLocation(
                 this.anchor.android,
@@ -28,8 +30,8 @@ export class ToolTip {
                 x, y);
         } else {
             this.prepareContent(false);
-            this.popup.showAsDropDown(this.anchor.android, 0, 0, android.view.Gravity.BOTTOM);
-        }
+            
+        }*/
 
         console.log('isAboveAnchor: ' + this.popup.isAboveAnchor())
     }
