@@ -28,7 +28,7 @@ export class ToolTip {
         // }
 
     }
-    // show(){
+    show(x: number, y: number){
     //     let config = this.config;
     //     let view = this.view;
     //     let pos;
@@ -75,7 +75,7 @@ export class ToolTip {
     //         }
     //         this.tip.showTextDirectionMaxWidthInViewFromFrame(config.text, pos, config.width, view.ios, view.ios.frame);
     //     }
-    // }
+    }
 
     // hide(){
     //     this.tip.hide();
