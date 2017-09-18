@@ -1,22 +1,28 @@
 export interface ToolTipConfig {
-    position?: ToolTipPosition;
-    text: string;
-    viewType?: ToolTipViewType;
-    duration?: number;
-    fadeDuration?: number,
     width?: number;
-    delay?: number;
-    hideArrow?: boolean;
-    backgroundColor?: string;
-    textColor?: string;
-    style?:string;
+    onDismiss?: android.widget.PopupWindow.OnDismissListener;
     callback?: ToolTipCallback;
+    content?: ToolTipContent;
 }
+
 export interface ToolTipCallback {
     onTooltipClose(tooltip: any, fromUser: boolean, containsTouch: boolean): void;
     onTooltipFailed(view: any): void;
     onTooltipShown(view: any): void;
     onTooltipHidden(view: any): void;
 }
-export type ToolTipPosition = "left" | "up" | "right" | "down" | "top" | "bottom";
+
+export interface ToolTipContent {
+    title?: string;
+    content?: string;
+    links?: ToolTipContentLink[];
+    buttons?: ToolTipContentLink[];
+}
+
+export interface ToolTipContentLink {
+    title: string;
+    androidOnClick: android.view.View.OnClickListener;
+}
+
+export type ToolTipPosition = "top" | "bottom";
 export type ToolTipViewType = "native";

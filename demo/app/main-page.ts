@@ -1,82 +1,91 @@
-/// <reference path="../../node_modules/tns-platform-declarations/android/android.d.ts" />
+/// <reference path='../../node_modules/tns-core-modules/tns-core-modules.d.ts' />
+/// <reference path='../../node_modules/tns-platform-declarations/android/android.d.ts' />
 
-import * as observable from 'data/observable';
-import * as pages from 'ui/page';
-import {HelloWorldModel} from './main-view-model';
-import {ToolTip} from "nativescript-tooltip";
-import {EventData} from "data/observable";
-import * as app from "application";
-import {TextView} from "ui/text-view";
-import {Color} from "color";
+import { HelloWorldModel } from './main-view-model';
+import { ToolTip, ToolTipConfig, ToolTipPosition } from 'nativescript-tooltip';
+import * as app from 'application';
+import * as frame from 'ui/frame';
+import { View } from 'ui/core/view';
+import * as LabelModule from 'ui/label';
+import * as StackLayoutModule from 'ui/layouts/stack-layout';
+import { EventData } from 'data/observable';
 // Event handler for Page 'loaded' event attached in main-page.xml
 
 const view = null;
+const tooltip: ToolTip;
 
 export function pageLoaded(args: any) {
     // Get the event sender
     this.view = args.object.nativeView;
-    console.log(view);
 }
 
-export function pushIt(args) {
-    const popup = new android.widget.PopupWindow();
+export function pushIt(args: EventData) {
+    const anchor = <View>args.object;
+    const parent = <View>anchor.parent;
 
-    const layout = new android.widget.LinearLayout(app.android.context);
+    this.tooltip = new ToolTip(anchor, {
+        width: 300,
+        onDismiss: new android.widget.PopupWindow.OnDismissListener({
+            onDismiss: () => {
+                console.log('popup window hidden');
+            }
+        }),
+        content: {
+            title: 'Popup Window Title',
+            content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+            links: [
+                {
+                    title: 'This is a link',
+                    androidOnClick: new android.view.View.OnClickListener({
+                        onClick: (view: any) => {
+                            console.log('This is a clicked link');
+                        }
+                    })
+                }
+            ],
+            buttons: [
+                {
+                    title: 'I am a button',
+                    androidOnClick: new android.view.View.OnClickListener({
+                        onClick: (view: any) => {
+                            console.log('I am a clicked button');
+                        }
+                    })
+                }
+            ]
+        },
+    });
 
-    const bg = new android.graphics.drawable.ColorDrawable(0xFFFF00FF);
-    const twTitle = new android.widget.TextView(app.android.context);
-    const anchor = <android.view.View>args.object.nativeView;
+    const anchorView = <android.view.View>anchor.android;
+    const parentView = <android.view.View>parent.android;
 
-    twTitle.setText('Hello i am a title');
-    layout.addView(twTitle);
-    popup.setBackgroundDrawable(bg);
-    popup.setContentView(layout);
-    popup.setWidth(200);
-    popup.setWindowLayoutMode(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT)
-    console.log(layout.getMeasuredHeight())
-    console.log(layout.getMinimumHeight())
-    popup.showAtLocation(args.object.nativeView, android.view.Gravity.BOTTOM, 0, 0);
+    const res = app.android.context.getResources();
+    //.getDrawable(R.drawable.AppThemeRoundedCornerButton);
+    console.log(res);
+    console.log(res.getIdentifier("AppThemeRoundedCornerButton", "drawable", app.android.context.getPackageName()));
+    console.log(app.android.context.getPackageName());
+    // console.log(android.);
+    
 
-    const location: native.Array<number> = new native.Array<number>();
-    console.log(anchor.getLocationOnScreen(location))
-
-    // const location: native.Array<number> = new native.Array<number>();
-    // console.log(anchor.getLocationOnScreen(location))
-    // console.log(location)
-//    const t = new ToolTip(args.object, {
-//         text: prepareContent(),
-//         position: "top",
-//         // hideArrow: false,
-//         // textColor: "white",
-//         // backgroundColor: "blue",
-//         style: "CustomToolTipLayoutStyle",
-//         width:400,
-//         callback: {
-//             onTooltipClose: (tooltip: any, fromUser: boolean, containsTouch: boolean) => {
-//                 console.log('onTooltipClose');
-//             },
-//             onTooltipFailed: (view: any) => {
-//                 console.log('onTooltipClose');
-//             },
-//             onTooltipHidden: (view: any) => {
-//                 console.log('onTooltipHidden');
-//             },
-//             onTooltipShown: (view: any) => {
-//                 console.log('onTooltipShown');
-//             }
-//         }
-//     });
-//     t.show();
+    // const asdf = new android.view.getWindow
+    const parentHeight = parentView.getHeight();
+    const x = anchorView.getX() + parentView.getX();
+    const y = (parentHeight - anchorView.getY()) + getBarHeight();
+    console.log((parentHeight / 2) + ' ' + anchorView.getY());
+    
+    if ((parentHeight / 2) < anchorView.getY()) {
+        this.tooltip.show(x, y);
+    } else {
+        this.tooltip.show();
+    }
 }
 
-function prepareContent() {
-    const elements: string[] = [];
-    elements.push('Hoi');
-    elements.push('<span style="text-decoraction: underline">x</span>')
-    elements.push('<hr />');
-    elements.push('<br />');
-    elements.push('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.');
-
-    elements.push('<a nsRouterLink="/secure/welcome" title="">Here is a link</a>');
-    return elements.join('');
+export function getBarHeight(): number {
+    const windowManager = <android.view.WindowManager>app.android.context.getSystemService(android.content.Context.WINDOW_SERVICE);
+    const metrics = new android.util.DisplayMetrics();
+    windowManager.getDefaultDisplay().getMetrics(metrics)
+    const usableHeight = metrics.heightPixels;
+    windowManager.getDefaultDisplay().getRealMetrics(metrics);
+    const realHeight = metrics.heightPixels;
+    return realHeight - usableHeight;
 }

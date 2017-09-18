@@ -1,13 +1,10 @@
-[![npm](https://img.shields.io/npm/v/nativescript-tooltip.svg)](https://www.npmjs.com/package/nativescript-tooltip)
-[![npm](https://img.shields.io/npm/dt/nativescript-tooltip.svg?label=npm%20downloads)](https://www.npmjs.com/package/nativescript-tooltip)
-
 # NativeScript ToolTip
+
+Nativescript implementation for android PopupWindow.
+
 
 ## Install
 `npm install ninjaonsafari/nativescript-tooltip --save`
-
-
-> Note: I will deploy a npm package as soon as [@triniwiz](https://github.com/triniwiz/nativescript-tooltip) gives me the rights.
 
 ## Usage
 #### View / Template
@@ -23,95 +20,54 @@
 ```ts
 import {ToolTip} from "nativescript-tooltip";
 
-toggleTooltip(args: any) {
-    if (!t) {
-        t = new ToolTip(args.object, {
-            text: 'I am a Tooltip.',
-            position: 'bottom'
-        });
-        t.show();
+export function pushIt(args: EventData) {
+    const anchor = <View>args.object;
+    const parent = <View>anchor.parent;
+
+    this.tooltip = new ToolTip(anchor, {
+        width: 300,
+        onDismiss: new android.widget.PopupWindow.OnDismissListener({
+            onDismiss: () => {
+                console.log('popup window hidden');
+            }
+        }),
+        content: {
+            title: 'Popup Window Title',
+            content: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
+            links: [
+                {
+                    title: 'This is a link',
+                    androidOnClick: new android.view.View.OnClickListener({
+                        onClick: (view: any) => {
+                            console.log('This is a clicked link');
+                        }
+                    })
+                }
+            ],
+            buttons: [
+                {
+                    title: 'I am a button',
+                    androidOnClick: new android.view.View.OnClickListener({
+                        onClick: (view: any) => {
+                            console.log('I am a clicked button');
+                        }
+                    })
+                }
+            ]
+        },
+    });
+
+    const anchorView = <android.view.View>anchor.android;
+    const parentView = <android.view.View>parent.android;
+
+    const parentHeight = parentView.getHeight();
+    const x = anchorView.getX() + parentView.getX();
+    const y = (parentHeight - anchorView.getY()) + getBarHeight();
+    
+    if ((parentHeight / 2) < anchorView.getY()) {
+        this.tooltip.show(x, y); // showAtLocation
     } else {
-        t.hide();
+        this.tooltip.show(); // showAsDropdown
     }
 }
 ```
-
-### Callbacks
-#### Android
-
-add the following to the tooltip config
-```js
-callback: {
-    onTooltipClose: (tooltip: any, fromUser: boolean, containsTouch: boolean) => {
-        console.log('onTooltipClose');
-    },
-    onTooltipFailed: (view: any) => {
-        console.log('onTooltipClose');
-    },
-    onTooltipHidden: (view: any) => {
-        console.log('onTooltipHidden');
-    },
-    onTooltipShown: (view: any) => {
-        console.log('onTooltipShown');
-    }
-}
-```
-
-#### IOS
-> Needs to be implemented
-
-## Styling
-
-### Android
-
-Add the following to your styles.xml in `app/App_Resources/Android/values`
-```xml
-<!-- Custom ToolTip -->
-
-    <style name="CustomToolTipLayoutStyle" parent="ToolTipLayoutDefaultStyle">
-        <item name="ttlm_backgroundColor">#FFFF00</item>
-        <item name="android:textColor">#000000</item>
-    </style>
-```
-
-### IOS
-TypeScript
-```ts
-import {ToolTip} from "nativescript-tooltip";
-const tip = new ToolTip(view,{text:"Some Text",backgroundColor:"pink",textColor:"black"});
-tip.show();  //.hide()
-```
-JavaScript
-```js
-const ToolTip = require("nativescript-tooltip").ToolTip;
-const tip = new ToolTip(view,{text:"Some Text",backgroundColor:"pink",textColor:"black"});
-tip.show();  //.hide()
-```
-
-### Config
-```ts
-const config = {
-  position?: "left" | "up" | "right" | "down" | "top" | "bottom";;
-  text: string;
-  viewType?: "native";
-  duration?: number;
-  fadeDuration?: number,
-  width?: number;
-  delay?: number;
-  hideArrow?: boolean;
-  backgroundColor?: string;
-  textColor?: string;
-  style?:string;
-  callback?: {
-    onTooltipClose(tooltip: any, fromUser: boolean, containsTouch: boolean): void;
-    onTooltipFailed(view: any): void;
-    onTooltipShown(view: any): void;
-    onTooltipHidden(view: any): void;
-  }
-}
-```
-
-# ScreenShots
-Android | IOS
---------- | ----------
-![ss](ss/tooltip_android.png?raw=true) | ![splash](ss/tooltip_ios.png?raw=true)
