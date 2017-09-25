@@ -8,7 +8,8 @@ export declare class ToolTip {
     private config;
     private anchor;
     constructor(view: View, config: ToolTipConfig);
-    show(x?: number, y?: number): void;
+    show(offsetX?: number, offsetY?: number): void;
+    hide(): void;
     private prepareContent(isArrowBottom);
     private getContentLayout(config);
     private getContentTitle(title);

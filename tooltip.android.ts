@@ -15,44 +15,39 @@ export class ToolTip {
         this.config = config;
         this.anchor = view;
         this.popup = new android.widget.PopupWindow();
-        this.layout = new android.widget.LinearLayout(app.android.context);   
+        this.layout = new android.widget.LinearLayout(app.android.context);
     }
 
-    public show(x?: number, y?: number) {
-        console.log('isAboveAnchor: ' + this.popup.isAboveAnchor())
-        this.popup.showAsDropDown(this.anchor.android);
+    public show(offsetX?: number, offsetY?: number) {
         this.prepareContent(this.popup.isAboveAnchor());
-        /*if (x >= 0 && y >= 0) {
-            this.prepareContent(true);
-            this.popup.showAtLocation(
-                this.anchor.android,
-                android.view.Gravity.BOTTOM|android.view.Gravity.LEFT,
-                x, y);
+        this.popup.showAsDropDown(this.anchor.android, offsetX, offsetY);
+        this.content.setClickable(true);
+        this.content.setOnClickListener(this.config.onClick);
+
+        if (this.popup.isAboveAnchor()) {
+            this.layout.addView(this.content);
+            this.layout.addView(this.getArrowView(50, true))
         } else {
-            this.prepareContent(false);
-            
-        }*/
+            this.layout.addView(this.getArrowView(50, false));
+            this.layout.addView(this.content);
+        }
 
         this.popup.update();
+    }
 
-        console.log('isAboveAnchor: ' + this.popup.isAboveAnchor())
+    public hide() {
+        if (this.popup.isShowing()) {
+            this.popup.dismiss();
+        }
     }
 
     private prepareContent(isArrowBottom: boolean) {
         // prepare content
         this.arrow = this.getArrowView(50, isArrowBottom);
         this.content = this.getContentLayout(this.config);
-        this.content.setOrientation(1);
-
-        // prepare layout
         this.layout.setOrientation(1);
-        if (isArrowBottom) {
-            this.layout.addView(this.content);
-            this.layout.addView(this.arrow);
-        } else {
-            this.layout.addView(this.arrow);
-            this.layout.addView(this.content);
-        }
+        this.content.setOrientation(1);
+        this.content.setLayoutParams(new android.view.ViewGroup.LayoutParams(this.config.width, this.config.height - 10));
 
         // prepare popup
         if (this.config.onDismiss) {
@@ -76,19 +71,29 @@ export class ToolTip {
         const content = new android.widget.LinearLayout(app.android.context);
         content.setPadding(20, 30, 20, 30);
         content.setOrientation(1);
-        content.setBackgroundColor(android.graphics.Color.BLACK);
+        wrapper.setBackgroundColor(android.graphics.Color.BLACK);
+        scrollView.setLayoutParams(
+            new android.view.ViewGroup.LayoutParams(
+                android.view.ViewGroup.LayoutParams.FILL_PARENT,
+                android.view.ViewGroup.LayoutParams.FILL_PARENT));
 
         if (config.content) {
             if (config.content.title) {
                 content.addView(this.getContentTitle(config.content.title));
-                content.addView(this.getContentHR());
+                if (config.content.showBorder) {
+                    content.addView(this.getContentHR());
+                }
             }
 
             if (config.content.content) {
                 content.addView(this.getContentText(config.content.content));
             }
 
-            if (config.content.links) {
+            if (config.content.links && config.content.links.length > 0) {
+                if (config.content.linksTitle) {
+                    content.addView(this.getContentText(config.content.linksTitle));
+                }
+
                 for (let i = 0; i < config.content.links.length; i++) {
                     content.addView(this.getContentLink(config.content.links[i]));
                 }
@@ -111,6 +116,10 @@ export class ToolTip {
         twTitle.setText(title);
         twTitle.setTextColor(android.graphics.Color.WHITE);
         twTitle.setPadding(0, 0, 0, 10);
+
+        twTitle.setClickable(false);
+        twTitle.setOnClickListener(this.config.onClick);
+
         return twTitle;
     }
 
@@ -119,6 +128,10 @@ export class ToolTip {
         hr.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT, 1));
         hr.setBackgroundColor(android.graphics.Color.WHITE);
         hr.setPadding(0, 5, 0, 5);
+
+        hr.setClickable(false);
+        hr.setOnClickListener(this.config.onClick);
+
         return hr;
     }
 
@@ -127,13 +140,17 @@ export class ToolTip {
         twContent.setText(text);
         twContent.setTextColor(android.graphics.Color.WHITE);
         twContent.setPadding(0, 10, 0, 0);
+
+        twContent.setClickable(false);
+        twContent.setOnClickListener(this.config.onClick);
+
         return twContent;
     }
 
     private getContentLink(link: ToolTipContentLink) {
         const twLink = new android.widget.TextView(app.android.context);
         twLink.setText(link.title);
-        twLink.setTextColor(android.graphics.Color.BLUE);
+        twLink.setTextColor(android.graphics.Color.rgb(66, 178, 214));
         twLink.setPadding(0, 5, 0, 5);
         twLink.setOnClickListener(link.androidOnClick);
         return twLink;
@@ -156,9 +173,9 @@ export class ToolTip {
         const canvas = new android.graphics.Canvas(bitmap);
         const path = new android.graphics.Path();
         const paint = new android.graphics.Paint();
-    
+
         paint.setColor(android.graphics.Color.BLACK);
-    
+
         if (isReverse) {
             path.moveTo(0, 0);
             path.lineTo(width, 0);
@@ -170,9 +187,9 @@ export class ToolTip {
             path.lineTo(0, width / 4);
             path.lineTo(width / 2, 0);
         }
-        
+
         path.close();
-    
+
         canvas.drawPath(path, paint);
         view.setImageBitmap(bitmap);
         return view;
@@ -180,7 +197,7 @@ export class ToolTip {
 
     private getButtonBackground(borderWidth: number, borderHeight: number, borderThickness: number): android.widget.ImageView {
         const view = new android.widget.ImageView(app.android.context);
-        const bitmap = android.graphics.Bitmap.createBitmap(borderWidth - (borderThickness*2), borderHeight - (borderThickness*2), android.graphics.Bitmap.Config.ARGB_8888);
+        const bitmap = android.graphics.Bitmap.createBitmap(borderWidth - (borderThickness * 2), borderHeight - (borderThickness * 2), android.graphics.Bitmap.Config.ARGB_8888);
         const path = new android.graphics.Path();
         const paint = new android.graphics.Paint();
         let canvas = new android.graphics.Canvas(bitmap);
@@ -196,7 +213,7 @@ export class ToolTip {
         paint.setStyle(android.graphics.Paint.Style.FILL);
         paint.setColor(android.graphics.Color.WHITE);
         canvas.drawRect(0, 0, borderWidth, borderHeight, paint);
-        canvas.drawRoundRect(new android.graphics.RectF(0,0,borderWidth, borderHeight), 20, 20, paint);
+        canvas.drawRoundRect(new android.graphics.RectF(0, 0, borderWidth, borderHeight), 20, 20, paint);
 
         // Create the masked version of the darknessView
         const borderBitmap = android.graphics.Bitmap.createBitmap(borderWidth, borderHeight, android.graphics.Bitmap.Config.ARGB_8888);

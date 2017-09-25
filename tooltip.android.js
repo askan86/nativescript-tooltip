@@ -8,26 +8,32 @@ var ToolTip = (function () {
         this.popup = new android.widget.PopupWindow();
         this.layout = new android.widget.LinearLayout(app.android.context);
     }
-    ToolTip.prototype.show = function (x, y) {
-        console.log('isAboveAnchor: ' + this.popup.isAboveAnchor());
-        this.popup.showAsDropDown(this.anchor.android);
+    ToolTip.prototype.show = function (offsetX, offsetY) {
         this.prepareContent(this.popup.isAboveAnchor());
+        this.popup.showAsDropDown(this.anchor.android, offsetX, offsetY);
+        this.content.setClickable(true);
+        this.content.setOnClickListener(this.config.onClick);
+        if (this.popup.isAboveAnchor()) {
+            this.layout.addView(this.content);
+            this.layout.addView(this.getArrowView(50, true));
+        }
+        else {
+            this.layout.addView(this.getArrowView(50, false));
+            this.layout.addView(this.content);
+        }
         this.popup.update();
-        console.log('isAboveAnchor: ' + this.popup.isAboveAnchor());
+    };
+    ToolTip.prototype.hide = function () {
+        if (this.popup.isShowing()) {
+            this.popup.dismiss();
+        }
     };
     ToolTip.prototype.prepareContent = function (isArrowBottom) {
         this.arrow = this.getArrowView(50, isArrowBottom);
         this.content = this.getContentLayout(this.config);
-        this.content.setOrientation(1);
         this.layout.setOrientation(1);
-        if (isArrowBottom) {
-            this.layout.addView(this.content);
-            this.layout.addView(this.arrow);
-        }
-        else {
-            this.layout.addView(this.arrow);
-            this.layout.addView(this.content);
-        }
+        this.content.setOrientation(1);
+        this.content.setLayoutParams(new android.view.ViewGroup.LayoutParams(this.config.width, this.config.height - 10));
         if (this.config.onDismiss) {
             this.popup.setOnDismissListener(this.config.onDismiss);
         }
@@ -44,16 +50,22 @@ var ToolTip = (function () {
         var content = new android.widget.LinearLayout(app.android.context);
         content.setPadding(20, 30, 20, 30);
         content.setOrientation(1);
-        content.setBackgroundColor(android.graphics.Color.BLACK);
+        wrapper.setBackgroundColor(android.graphics.Color.BLACK);
+        scrollView.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT, android.view.ViewGroup.LayoutParams.FILL_PARENT));
         if (config.content) {
             if (config.content.title) {
                 content.addView(this.getContentTitle(config.content.title));
-                content.addView(this.getContentHR());
+                if (config.content.showBorder) {
+                    content.addView(this.getContentHR());
+                }
             }
             if (config.content.content) {
                 content.addView(this.getContentText(config.content.content));
             }
-            if (config.content.links) {
+            if (config.content.links && config.content.links.length > 0) {
+                if (config.content.linksTitle) {
+                    content.addView(this.getContentText(config.content.linksTitle));
+                }
                 for (var i = 0; i < config.content.links.length; i++) {
                     content.addView(this.getContentLink(config.content.links[i]));
                 }
@@ -73,6 +85,8 @@ var ToolTip = (function () {
         twTitle.setText(title);
         twTitle.setTextColor(android.graphics.Color.WHITE);
         twTitle.setPadding(0, 0, 0, 10);
+        twTitle.setClickable(false);
+        twTitle.setOnClickListener(this.config.onClick);
         return twTitle;
     };
     ToolTip.prototype.getContentHR = function () {
@@ -80,6 +94,8 @@ var ToolTip = (function () {
         hr.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.FILL_PARENT, 1));
         hr.setBackgroundColor(android.graphics.Color.WHITE);
         hr.setPadding(0, 5, 0, 5);
+        hr.setClickable(false);
+        hr.setOnClickListener(this.config.onClick);
         return hr;
     };
     ToolTip.prototype.getContentText = function (text) {
@@ -87,12 +103,14 @@ var ToolTip = (function () {
         twContent.setText(text);
         twContent.setTextColor(android.graphics.Color.WHITE);
         twContent.setPadding(0, 10, 0, 0);
+        twContent.setClickable(false);
+        twContent.setOnClickListener(this.config.onClick);
         return twContent;
     };
     ToolTip.prototype.getContentLink = function (link) {
         var twLink = new android.widget.TextView(app.android.context);
         twLink.setText(link.title);
-        twLink.setTextColor(android.graphics.Color.BLUE);
+        twLink.setTextColor(android.graphics.Color.rgb(66, 178, 214));
         twLink.setPadding(0, 5, 0, 5);
         twLink.setOnClickListener(link.androidOnClick);
         return twLink;

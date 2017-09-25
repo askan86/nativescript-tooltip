@@ -1,6 +1,7 @@
 export interface ToolTipConfig {
     width?: number;
     height?: number;
+    onClick?: android.view.View.OnClickListener;
     onDismiss?: android.widget.PopupWindow.OnDismissListener;
     callback?: ToolTipCallback;
     content?: ToolTipContent;
@@ -13,7 +14,9 @@ export interface ToolTipCallback {
 }
 export interface ToolTipContent {
     title?: string;
+    showBorder?: boolean;
     content?: string;
+    linksTitle?: string;
     links?: ToolTipContentLink[];
     buttons?: ToolTipContentLink[];
 }
